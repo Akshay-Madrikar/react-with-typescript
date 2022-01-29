@@ -1,13 +1,9 @@
 import ReactDOM from 'react-dom';
-import GuestList from './state/GuestList';
-import SearchGuest from './refs/SearchGuest';
 
 const App = () => {
   return (
     <div>
       <h1>Hi there!!</h1>
-      <GuestList />
-      <SearchGuest />
     </div>
   );
 };
