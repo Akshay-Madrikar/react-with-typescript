@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const users = [
   {
@@ -12,6 +12,7 @@ const users = [
 ];
 
 const SearchGuest: React.FC = () => {
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [name, setName] = useState('');
   const [user, setUser] = useState<{ name: string; age: number } | undefined>();
 
@@ -21,11 +22,18 @@ const SearchGuest: React.FC = () => {
     );
     setUser(foundUser);
   };
+
+  useEffect(() => {
+    if (!inputRef.current) return;
+    inputRef.current.focus();
+  }, []);
+
   return (
     <div>
       <h3>Search Guest</h3>
 
       <input
+        ref={inputRef}
         value={name}
         onChange={(e) => setName(e.target.value.toLocaleLowerCase())}
       />

@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom';
 import GuestList from './state/GuestList';
-import SearchGuest from './state/SearchGuest';
+import SearchGuest from './refs/SearchGuest';
 
 const App = () => {
   return (
