@@ -1,12 +1,8 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from '@reduxjs/toolkit';
+import repositorySlice from './repositoriesReducer';
 
-import RepositoryReducer from './repositoriesReducer';
-
-const reducers = combineReducers({
-  repositories: RepositoryReducer,
+export const rootReducer = combineReducers({
+  repositories: repositorySlice.reducer,
 });
 
-export default reducers;
-
-// Declare type of Redux store
-export type RootState = ReturnType<typeof reducers>;
+export type RootState = ReturnType<typeof rootReducer>;

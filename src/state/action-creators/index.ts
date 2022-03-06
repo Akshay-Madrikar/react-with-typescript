@@ -1,17 +1,13 @@
 import axios from 'axios';
-import { Dispatch } from 'redux';
-
-import { ActionTypes } from '../action-types';
-import { Action } from '../actions';
+import { SearchRepositoriesSuccessAction } from '../actions';
+import { repositoryActions } from '../reducers/repositoriesReducer';
 
 export const searchRepositories = (term: string) => {
-  return async (dispatch: Dispatch<Action>) => {
-    dispatch({
-      type: ActionTypes.SEARCH_REPOSITORIES,
-    });
+  return async (dispatch: any) => {
+    dispatch(repositoryActions.searchRepositories());
 
-    try {
-      const { data } = await axios.get(
+    const fetchRepository = async () => {
+      const response = await axios.get(
         'https://registry.npmjs.org/-/v1/search',
         {
           params: {
@@ -20,19 +16,22 @@ export const searchRepositories = (term: string) => {
         }
       );
 
-      const names = data.objects.map((result: any) => {
+      if (response.status !== 200) {
+        throw new Error('Could not fetch repositories!');
+      }
+
+      const names = response.data.objects.map((result: any) => {
         return result.package.name;
       });
 
-      dispatch({
-        type: ActionTypes.SEARCH_REPOSITORIES_SUCCESS,
-        payload: names,
-      });
+      return names;
+    };
+    try {
+      const repositories: SearchRepositoriesSuccessAction =
+        await fetchRepository();
+      dispatch(repositoryActions.searchRepositoriesSuccess(repositories));
     } catch (error: any) {
-      dispatch({
-        type: ActionTypes.SEARCH_REPOSITORIES_ERROR,
-        payload: error.message,
-      });
+      dispatch(repositoryActions.searchRepositoriesError(error));
     }
   };
 };
