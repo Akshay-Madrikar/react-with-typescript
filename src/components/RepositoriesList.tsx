@@ -6,7 +6,7 @@ import { useTypedSelector } from '../hooks/useTypedSelector';
 const RepositoriesList: React.FC = () => {
   const [term, setTerm] = useState('');
   const { searchRepositories } = useActions();
-  const { loading, error, data } = useTypedSelector(
+  const { status, error, data } = useTypedSelector(
     (state) => state.repositories
   );
   console.log(data);
@@ -27,10 +27,12 @@ const RepositoriesList: React.FC = () => {
         <input value={term} onChange={(e) => setTerm(e.target.value)} />
         <button>Search</button>
       </form>
-      {data.length === 0 && !loading && <h3>No data</h3>}
+      {data.length === 0 && status !== 'loading' && <h3>No data</h3>}
       {error && <h3>{error}</h3>}
-      {loading && <h3>Loading...</h3>}
-      {!error && !loading && data.map((name) => <div key={name}>{name}</div>)}
+      {status === 'loading' && <h3>Loading...</h3>}
+      {!error &&
+        status !== 'loading' &&
+        data.map((name) => <div key={name}>{name}</div>)}
     </div>
   );
 };
