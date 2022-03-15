@@ -1,3 +1,3 @@
-export type SearchRepositoriesSuccessAction = string[];
+export type SearchRepositoriesSuccessPayload = string[];
 
-export type SearchRepositoriesErrorAction = string;
+export type SearchRepositoriesErrorPayload = string;
